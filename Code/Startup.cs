@@ -46,6 +46,8 @@ namespace AspNetCoreApps
             // register the service classes
 
             services.AddScoped<IService<CompetencyFramework, int>, CompetencyFrameworkService>();
+            services.AddScoped<IService<CompetencyDetail, int>, CompetencyDetailService>();
+            services.AddScoped<ICompetencyDetail, CompetencyDetailService>();
             services.AddScoped<IService<Information, int>, InformationService>();
 
             services.AddCors(options => options.AddPolicy("corspolicy", policy => { policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));

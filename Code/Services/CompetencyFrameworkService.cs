@@ -41,9 +41,13 @@ namespace API.Services
             return res;
         }
 
-        public Task<CompetencyFramework> CreateAsync(CompetencyFramework entity)
+        public async Task<CompetencyFramework> CreateAsync(CompetencyFramework entity)
         {
-            throw new NotImplementedException();
+            entity.CreatedBy = 1;
+            entity.CreatedDate = DateTime.Today;
+            var res = await ctx.CompetencyFramework.AddAsync(entity);
+            await ctx.SaveChangesAsync();
+            return res.Entity;
         }
 
         public Task<CompetencyFramework> UpdateAsync(int id, CompetencyFramework entity)

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using API.Models;
 using API.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +12,16 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompetencyFrameworkController : ControllerBase
+    public class CompetencyDetailController : ControllerBase
     {
-        private readonly IService<CompetencyFramework, int> service;
+        private readonly IService<CompetencyDetail, int> service;
+        private readonly ICompetencyDetail _competencyDetail;
 
-        public CompetencyFrameworkController(IService<CompetencyFramework, int> service)
+        public CompetencyDetailController(IService<CompetencyDetail, int> service,
+            ICompetencyDetail competencyDetail)
         {
             this.service = service;
+            this._competencyDetail = competencyDetail;
         }
 
         [HttpGet]
@@ -42,6 +46,13 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetCompetencyNameByFrameworkID/{id}")]
+        public async Task<IActionResult> GetCompetencyNameByFrameworkID(int id)
+        {
+            var res = await _competencyDetail.GetCompetencyNameByFrameworkID(id);
+            return Ok(res);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
@@ -60,16 +71,16 @@ namespace API.Controllers
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post(CompetencyFramework competencyFramework)
+        public async Task<IActionResult> Post(CompetencyDetail competencyDetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            await service.CreateAsync(competencyFramework);
+            await service.CreateAsync(competencyDetail);
 
-            return Ok(competencyFramework);
+            return Ok(competencyDetail);
         }
     }
 }
