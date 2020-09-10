@@ -15,5 +15,7 @@ namespace API.Models
 
         public DbSet<CompetencyDetail> CompetencyDetail { get; set; }
         public DbSet<Information> Information { get; set; }
+
+        public DbSet<EmployeeCompetency> EmployeeCompetency { get; set; }
     }
 }
