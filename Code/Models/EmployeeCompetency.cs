@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
 {
@@ -17,5 +19,12 @@ namespace API.Models
         public DateTime ReviewDate { get; set; }
         public int ReviewID { get; set; }
         public bool IsComplete { get; set; }
+
+        public bool IsSave { get; set; }
+        public bool IsDraft { get; set; }
+
+        public string FileName { get; set; }
+        [NotMapped]
+        public IFormFile[] Files { get; set; }
     }
 }

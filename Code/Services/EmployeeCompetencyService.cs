@@ -43,13 +43,23 @@ namespace API.Services
 
         public async Task<EmployeeCompetency> CreateAsync(EmployeeCompetency entity)
         {
-            entity.CreatedID = 1;
-            entity.CreatedDate = DateTime.Today;
-            entity.ReviewID = 0;
-            entity.IsComplete = false;
-            var res = await ctx.EmployeeCompetency.AddAsync(entity);
-            await ctx.SaveChangesAsync();
-            return res.Entity;
+            try
+            {
+                entity.CreatedID = 1;
+                entity.CreatedDate = DateTime.Today;
+                entity.ReviewID = 0;
+                entity.ReviewerComment = string.Empty;
+                entity.IsComplete = false;
+                var res = await ctx.EmployeeCompetency.AddAsync(entity);
+                await ctx.SaveChangesAsync();
+
+                return res.Entity;
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+            }
+            return null;
         }
 
         public Task<EmployeeCompetency> UpdateAsync(int id, EmployeeCompetency entity)

@@ -6,11 +6,15 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using System.IO;
 using System.Security.Claims;
 
 namespace AspNetCoreApps
@@ -73,7 +77,11 @@ namespace AspNetCoreApps
             {
                 options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
             });
-
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
             // register the scope authorization handler
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -96,12 +104,19 @@ namespace AspNetCoreApps
             }
 
             app.UseCors(builder =>
-   builder
-     .WithOrigins("http://localhost:4200")
-     .AllowAnyHeader()
-     .AllowAnyMethod()
-     .AllowCredentials()
- );
+                           builder
+                             .WithOrigins("http://localhost:4200")
+                             .AllowAnyHeader()
+                             .AllowAnyMethod()
+                             .AllowCredentials()
+                         );
+
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             // register the custom middleware
             app.UseAuthentication();

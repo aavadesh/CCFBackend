@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using API.Models;
@@ -77,7 +79,6 @@ namespace API.Controllers
             {
                 return BadRequest();
             }
-
             await service.CreateAsync(competencyDetail);
 
             return Ok(competencyDetail);
