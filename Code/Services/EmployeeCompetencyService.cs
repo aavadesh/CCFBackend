@@ -3,11 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace API.Services
 {
-    public class EmployeeCompetencyService : IService<EmployeeCompetency, int>
+    public interface IEmployeeCompetency
+    {
+        Task<EmployeeCompetency> GetAsync(int id, int employeeID);
+    }
+    public class EmployeeCompetencyService : IService<EmployeeCompetency, int>, IEmployeeCompetency
     {
         private readonly _DbContext ctx;
         /// <summary>
@@ -32,6 +37,12 @@ namespace API.Services
         public async Task<IEnumerable<EmployeeCompetency>> GetAsync()
         {
             var res = await ctx.EmployeeCompetency.ToListAsync();
+            return res;
+        }
+
+        public async Task<EmployeeCompetency> GetAsync(int id, int employeeID)
+        {
+            var res = await ctx.EmployeeCompetency.Where(x => x.CompetencyID == id && x.EmployeeID == employeeID).FirstOrDefaultAsync();
             return res;
         }
 
@@ -62,9 +73,26 @@ namespace API.Services
             return null;
         }
 
-        public Task<EmployeeCompetency> UpdateAsync(int id, EmployeeCompetency entity)
+        public async Task<EmployeeCompetency> UpdateAsync(int id, EmployeeCompetency entity)
         {
-            throw new NotImplementedException();
+            ctx.Attach(entity);
+            ctx.Entry(entity).State = EntityState.Modified;
+
+            var entry = ctx.Entry(entity);
+
+            Type type = typeof(EmployeeCompetency);
+            PropertyInfo[] properties = type.GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.GetValue(entity, null) == null)
+                {
+                    entry.Property(property.Name).IsModified = false;
+                }
+            }
+
+           await ctx.SaveChangesAsync();
+
+            return entity;
         }
     }
 }

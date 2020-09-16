@@ -17,10 +17,13 @@ namespace API.Controllers
     public class EmployeeCompetencyController : ControllerBase
     {
         private readonly IService<EmployeeCompetency, int> service;
+        private readonly IEmployeeCompetency _employeeCompetency;
 
-        public EmployeeCompetencyController(IService<EmployeeCompetency, int> service)
+        public EmployeeCompetencyController(IService<EmployeeCompetency, int> service,
+            IEmployeeCompetency employeeCompetency)
         {
             this.service = service;
+            this._employeeCompetency = employeeCompetency;
         }
 
         [HttpGet]
@@ -36,6 +39,21 @@ namespace API.Controllers
             try
             {
                 var res = await service.GetAsync(id);
+                if (res == null) throw new Exception("Record not found");
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/{employeeID}")]
+        public async Task<IActionResult> GetAsync(int id, int employeeID)
+        {
+            try
+            {
+                var res = await _employeeCompetency.GetAsync(id, employeeID);
                 if (res == null) throw new Exception("Record not found");
                 return Ok(res);
             }
@@ -87,6 +105,14 @@ namespace API.Controllers
                 return BadRequest();
             }
             await service.CreateAsync(employeeCompetency);
+
+            return Ok(employeeCompetency);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] EmployeeCompetency employeeCompetency)
+        {
+            await service.UpdateAsync(employeeCompetency.EmployeeCompetencyID, employeeCompetency);
 
             return Ok(employeeCompetency);
         }

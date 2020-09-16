@@ -26,5 +26,10 @@ namespace API.Models
         public string FileName { get; set; }
         [NotMapped]
         public IFormFile[] Files { get; set; }
+
+        public int EmployeeID { get; set; }
+
+        [NotMapped]
+       public int EmployeeCompID { get; set; }
     }
 }

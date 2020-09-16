@@ -53,6 +53,7 @@ namespace AspNetCoreApps
             services.AddScoped<IService<CompetencyDetail, int>, CompetencyDetailService>();
             services.AddScoped<ICompetencyDetail, CompetencyDetailService>();
             services.AddScoped<IService<EmployeeCompetency, int>, EmployeeCompetencyService>();
+            services.AddScoped<IEmployeeCompetency, EmployeeCompetencyService>();
             services.AddScoped<IService<Information, int>, InformationService>();
 
             services.AddCors(options => options.AddPolicy("corspolicy", policy => { policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }));
