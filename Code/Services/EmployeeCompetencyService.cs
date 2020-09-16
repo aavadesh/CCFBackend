@@ -75,24 +75,31 @@ namespace API.Services
 
         public async Task<EmployeeCompetency> UpdateAsync(int id, EmployeeCompetency entity)
         {
-            ctx.Attach(entity);
             ctx.Entry(entity).State = EntityState.Modified;
-
-            var entry = ctx.Entry(entity);
-
-            Type type = typeof(EmployeeCompetency);
-            PropertyInfo[] properties = type.GetProperties();
-            foreach (PropertyInfo property in properties)
+            ctx.Entry(entity);
+            entity.ReviewDate = DateTime.Today;
+            try
             {
-                if (property.GetValue(entity, null) == null)
+                await ctx.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return entity;
+        }
+
+        public static object CheckUpdateObject(object originalObj, object updateObj)
+        {
+            foreach (var property in updateObj.GetType().GetProperties())
+            {
+                if (property.GetValue(updateObj, null) == null)
                 {
-                    entry.Property(property.Name).IsModified = false;
+                    property.SetValue(updateObj, originalObj.GetType().GetProperty(property.Name)
+                    .GetValue(originalObj, null));
                 }
             }
-
-           await ctx.SaveChangesAsync();
-
-            return entity;
+            return updateObj;
         }
     }
 }

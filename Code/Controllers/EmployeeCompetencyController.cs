@@ -110,8 +110,13 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] EmployeeCompetency employeeCompetency)
+        public async Task<IActionResult> Put([FromForm] EmployeeCompetency employeeCompetency)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             await service.UpdateAsync(employeeCompetency.EmployeeCompetencyID, employeeCompetency);
 
             return Ok(employeeCompetency);

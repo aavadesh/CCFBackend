@@ -29,7 +29,5 @@ namespace API.Models
 
         public int EmployeeID { get; set; }
 
-        [NotMapped]
-       public int EmployeeCompID { get; set; }
     }
 }
