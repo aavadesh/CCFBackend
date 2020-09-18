@@ -106,18 +106,18 @@ namespace AspNetCoreApps
 
             app.UseCors(builder =>
                            builder
-                             .WithOrigins("http://localhost:4200")
+                             .WithOrigins("http://localhost:4200", "https://ccfwebapp.azurewebsites.net/")
                              .AllowAnyHeader()
                              .AllowAnyMethod()
                              .AllowCredentials()
                          );
 
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
-            });
+            //app.UseStaticFiles(new StaticFileOptions()
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+            //    RequestPath = new PathString("/Resources")
+            //});
 
             // register the custom middleware
             app.UseAuthentication();
