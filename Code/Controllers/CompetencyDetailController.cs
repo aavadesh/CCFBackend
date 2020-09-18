@@ -7,6 +7,7 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using API.Models;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CompetencyDetailController : ControllerBase
     {
         private readonly IService<CompetencyDetail, int> service;

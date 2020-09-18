@@ -11,6 +11,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CompetencyFrameworkController : ControllerBase
     {
         private readonly IService<CompetencyFramework, int> service;
