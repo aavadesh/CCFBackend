@@ -113,11 +113,11 @@ namespace AspNetCoreApps
                          );
 
             app.UseStaticFiles();
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-            //    RequestPath = new PathString("/Resources")
-            //});
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider("/d/home/site/wwwroot/Resources"),
+                RequestPath = new PathString("/d/home/site/wwwroot/Resources")
+            });
 
             // register the custom middleware
             app.UseAuthentication();
