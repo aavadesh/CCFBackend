@@ -86,21 +86,25 @@ namespace API.Controllers
             var files = employeeCompetency.Files;
             var folderName = Path.Combine("Resources", "Images");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            if (files.Any(f => f.Length == 0))
+           
+            if(employeeCompetency.Files != null)
             {
-                return BadRequest();
-            }
-            foreach (var file in files)
-            {
-                var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                var fullPath = Path.Combine(pathToSave, fileName);
-                var dbPath = Path.Combine(folderName, fileName); //you can add this path to a list and then return all dbPaths to the client if require
-                using (var stream = new FileStream(fullPath, FileMode.Create))
+                if (files.Any(f => f.Length == 0))
                 {
-                    file.CopyTo(stream);
+                    return BadRequest();
                 }
+                foreach (var file in files)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName); //you can add this path to a list and then return all dbPaths to the client if require
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
 
-                employeeCompetency.FileName = fileName;
+                    employeeCompetency.FileName = fileName;
+                }
             }
 
             if (!ModelState.IsValid)
@@ -113,6 +117,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
+        [AllowAnonymous]
         public async Task<IActionResult> Put([FromForm] EmployeeCompetency employeeCompetency)
         {
             if (!ModelState.IsValid)
