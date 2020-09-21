@@ -116,7 +116,7 @@ namespace AspNetCoreApps
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("D:/home/site/wwwroot/Resources")
+                RequestPath = new PathString("/Resources")
             });
 
             // register the custom middleware
