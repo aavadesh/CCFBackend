@@ -80,6 +80,7 @@ namespace API.Controllers
         }
 
         [HttpPost, DisableRequestSizeLimit]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromForm] EmployeeCompetency employeeCompetency)
         {
             var files = employeeCompetency.Files;
