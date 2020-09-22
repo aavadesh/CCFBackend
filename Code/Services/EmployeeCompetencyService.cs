@@ -75,8 +75,12 @@ namespace API.Services
 
         public async Task<EmployeeCompetency> UpdateAsync(int id, EmployeeCompetency entity)
         {
-            ctx.Entry(entity).State = EntityState.Modified;
-            ctx.Entry(entity);
+            var result = ctx.EmployeeCompetency.SingleOrDefault(b => b.EmployeeCompetencyID == id);
+            result.ReviewerComment = entity.ReviewerComment;
+            result.IsComplete  = entity.IsComplete;
+
+            ctx.Entry(result).State = EntityState.Modified;
+            ctx.Entry(result);
             entity.ReviewDate = DateTime.Today;
             try
             {

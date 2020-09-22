@@ -118,14 +118,14 @@ namespace API.Controllers
 
         [HttpPut]
         [AllowAnonymous]
-        public async Task<IActionResult> Put([FromForm] EmployeeCompetency employeeCompetency)
+        public async Task<IActionResult> Put(int id, [FromForm] EmployeeCompetency employeeCompetency)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await service.UpdateAsync(employeeCompetency.EmployeeCompetencyID, employeeCompetency);
+            await service.UpdateAsync(id, employeeCompetency);
 
             return Ok(employeeCompetency);
         }
