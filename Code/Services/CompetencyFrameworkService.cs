@@ -50,9 +50,19 @@ namespace API.Services
             return res.Entity;
         }
 
-        public Task<CompetencyFramework> UpdateAsync(int id, CompetencyFramework entity)
+        public async Task<CompetencyFramework> UpdateAsync(int id, CompetencyFramework entity)
         {
-            throw new NotImplementedException();
+            ctx.Entry(entity).State = EntityState.Modified;
+            ctx.Entry(entity);
+            try
+            {
+                await ctx.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return entity;
         }
     }
 }

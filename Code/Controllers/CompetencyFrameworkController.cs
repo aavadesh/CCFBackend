@@ -11,7 +11,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class CompetencyFrameworkController : ControllerBase
     {
         private readonly IService<CompetencyFramework, int> service;
@@ -69,6 +69,22 @@ namespace API.Controllers
             }
 
             await service.CreateAsync(competencyFramework);
+
+            return Ok(competencyFramework);
+        }
+
+        [HttpPut]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Put(int id, CompetencyFramework competencyFramework)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await service.UpdateAsync(id, competencyFramework);
 
             return Ok(competencyFramework);
         }
