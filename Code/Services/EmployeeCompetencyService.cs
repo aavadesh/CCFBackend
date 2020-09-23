@@ -13,6 +13,7 @@ namespace API.Services
     {
         Task<EmployeeCompetency> GetAsync(int id, int employeeID);
         Task<IEnumerable<EmployeeCompetencyViewModel>> GetEmployeeCompetencyAsync(int id);
+        Task<EmployeeCompetency> FindEmployeeAsync(int employeeID);
     }
     public class EmployeeCompetencyService : IService<EmployeeCompetency, int>, IEmployeeCompetency
     {
@@ -67,6 +68,12 @@ namespace API.Services
         public async Task<EmployeeCompetency> GetAsync(int id, int employeeID)
         {
             var res = await ctx.EmployeeCompetency.Where(x => x.CompetencyID == id && x.EmployeeID == employeeID).FirstOrDefaultAsync();
+            return res;
+        }
+
+        public async Task<EmployeeCompetency> FindEmployeeAsync(int employeeID)
+        {
+            var res = await ctx.EmployeeCompetency.Where(x =>x.EmployeeID == employeeID).FirstOrDefaultAsync();
             return res;
         }
 

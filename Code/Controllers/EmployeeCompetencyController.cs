@@ -41,7 +41,7 @@ namespace API.Controllers
             try
             {
                 var res = await service.GetAsync(id);
-                if (res == null) throw new Exception("Record not found");
+                if (res == null) NotFound("Record not found");
                 return Ok(res);
             }
             catch (Exception ex)
@@ -134,6 +134,13 @@ namespace API.Controllers
         public async Task<IActionResult> GetEmployeeCompetency(int id)
         {
             var res = await _employeeCompetency.GetEmployeeCompetencyAsync(id);
+            return Ok(res);
+        }
+
+        [HttpGet("FindEmployee/{id}")]
+        public async Task<IActionResult> FindEmployee(int id)
+        {
+            var res = await _employeeCompetency.FindEmployeeAsync(id);
             return Ok(res);
         }
     }
