@@ -129,5 +129,12 @@ namespace API.Controllers
 
             return Ok(employeeCompetency);
         }
+
+        [HttpGet("GetEmployeeCompetency/{id}")]
+        public async Task<IActionResult> GetEmployeeCompetency(int id)
+        {
+            var res = await _employeeCompetency.GetEmployeeCompetencyAsync(id);
+            return Ok(res);
+        }
     }
 }

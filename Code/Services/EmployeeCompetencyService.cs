@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace API.Services
     public interface IEmployeeCompetency
     {
         Task<EmployeeCompetency> GetAsync(int id, int employeeID);
+        Task<IEnumerable<EmployeeCompetencyViewModel>> GetEmployeeCompetencyAsync(int id);
     }
     public class EmployeeCompetencyService : IService<EmployeeCompetency, int>, IEmployeeCompetency
     {
@@ -38,6 +40,27 @@ namespace API.Services
         {
             var res = await ctx.EmployeeCompetency.ToListAsync();
             return res;
+        }
+
+        public async Task<IEnumerable<EmployeeCompetencyViewModel>> GetEmployeeCompetencyAsync(int id)
+        {
+           var test= from e in ctx.EmployeeCompetency
+            join c in ctx.CompetencyDetail on e.CompetencyID equals c.CompetencyID
+                     join f in ctx.CompetencyFramework on c.CompetencyFrameworkID equals f.CompetencyFrameworkID
+                     where e.EmployeeID == id
+            select new EmployeeCompetencyViewModel {
+                EmployeeCompetencyID = e.EmployeeCompetencyID,
+                CompetencyID = e.CompetencyID,
+                EmployeeCommnet = e.EmployeeCommnet,
+                ReviewerComment = e.ReviewerComment,
+                FrameworkName = f.Name,
+                CompetencyName = c.CompetencyName,
+                IsComplete = e.IsComplete,
+                IsSave = e.IsSave,
+                IsDraft = e.IsDraft
+            };
+
+            return await test.ToListAsync();
         }
 
         public async Task<EmployeeCompetency> GetAsync(int id, int employeeID)
