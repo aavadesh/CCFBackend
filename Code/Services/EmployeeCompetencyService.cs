@@ -57,7 +57,8 @@ namespace API.Services
                 CompetencyName = c.CompetencyName,
                 IsComplete = e.IsComplete,
                 IsSave = e.IsSave,
-                IsDraft = e.IsDraft
+                IsDraft = e.IsDraft,
+                CompetencyFrameworkID = f.CompetencyFrameworkID
             };
 
             return await test.ToListAsync();

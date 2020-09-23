@@ -25,6 +25,7 @@ namespace API.ViewModels
         [NotMapped]
         public IFormFile[] Files { get; set; }
 
+        public int CompetencyFrameworkID { get; set; }
         public int EmployeeID { get; set; }
         public string CompetencyName { get; set; }
         public string FrameworkName { get; set; }
