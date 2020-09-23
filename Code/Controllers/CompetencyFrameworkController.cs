@@ -74,17 +74,14 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put(int id, CompetencyFramework competencyFramework)
+        public async Task<IActionResult> Put([FromBody]CompetencyFramework competencyFramework)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await service.UpdateAsync(id, competencyFramework);
+            await service.UpdateAsync(competencyFramework.CompetencyFrameworkID, competencyFramework);
 
             return Ok(competencyFramework);
         }
